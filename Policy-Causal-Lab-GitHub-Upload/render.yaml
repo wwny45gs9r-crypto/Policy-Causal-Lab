@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: policy-causal-lab-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: policy-causal-lab-db
+          property: connectionString
+      - key: FRONTEND_ORIGIN
+        value: https://your-project.vercel.app
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: DEEPSEEK_BASE_URL
+        value: https://api.deepseek.com
+      - key: DEEPSEEK_MODEL
+        value: deepseek-v4-pro
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: ENV
+        value: production
+
+databases:
+  - name: policy-causal-lab-db
+    databaseName: policy_causal_lab
+    user: policy_causal_lab
